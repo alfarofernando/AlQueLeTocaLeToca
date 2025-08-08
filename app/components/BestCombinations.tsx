@@ -1,10 +1,9 @@
-"use client";
-
 import { useState, useEffect, useRef } from "react";
 import { useProducts } from "../hooks/useProducts";
 import { ProductType } from "../types/ProductType";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "../context/CartContext";
+import { findBestCombination } from "../utils/findBestCombination";
 
 export default function BestCombination({ budget = 10000 }: { budget?: number }) {
     const { products, loading, error } = useProducts();
@@ -13,53 +12,23 @@ export default function BestCombination({ budget = 10000 }: { budget?: number })
     const [showContent, setShowContent] = useState<boolean>(false);
     const [loadingContent, setLoadingContent] = useState<boolean>(false);
     const [animating, setAnimating] = useState<boolean>(false);
-    const [bestCombo, setBestCombo] = useState<{ product: ProductType, quantity: number }[]>([]);
+    const [bestCombo, setBestCombo] = useState<{ product: ProductType; quantity: number }[]>([]);
     const contentRef = useRef<HTMLDivElement>(null);
     const [contentHeight, setContentHeight] = useState<number>(0);
     const { addToCart } = useCart();
 
-
-    // Función que busca una combinación aleatoria válida, no la mejor exacta
-    const findRandomCombination = (products: ProductType[], maxBudget: number): { product: ProductType, quantity: number }[] => {
-        if (!products.length) return [];
-
-        const filtered = products.filter((p) => p.price <= maxBudget);
-        if (!filtered.length) return [];
-
-        let bestCombo: { product: ProductType, quantity: number }[] = [];
-        let bestTotal = 0;
-        const attempts = 300;
-
-        for (let i = 0; i < attempts; i++) {
-            let combo: ProductType[] = [];
-            let total = 0;
-
-            while (true) {
-                const randomProduct = filtered[Math.floor(Math.random() * filtered.length)];
-                if (total + randomProduct.price > maxBudget) break;
-
-                combo.push(randomProduct);
-                total += randomProduct.price;
-            }
-
-            if (total > bestTotal) {
-                // Agrupar
-                const grouped = combo.reduce<{ [key: string]: { product: ProductType, quantity: number } }>((acc, item) => {
-                    if (acc[item.id]) {
-                        acc[item.id].quantity += 1;
-                    } else {
-                        acc[item.id] = { product: item, quantity: 1 };
-                    }
-                    return acc;
-                }, {});
-                bestCombo = Object.values(grouped);
-                bestTotal = total;
+    // Convierte array simple a array con cantidad agrupada
+    function groupByQuantity(productsList: ProductType[]) {
+        const map = new Map<number, { product: ProductType; quantity: number }>();
+        for (const prod of productsList) {
+            if (map.has(prod.id)) {
+                map.get(prod.id)!.quantity++;
+            } else {
+                map.set(prod.id, { product: prod, quantity: 1 });
             }
         }
-
-        return bestCombo;
-    };
-
+        return Array.from(map.values());
+    }
 
     const toggleOpen = () => {
         if (isOpen) {
@@ -75,8 +44,8 @@ export default function BestCombination({ budget = 10000 }: { budget?: number })
 
             setTimeout(() => {
                 if (products) {
-                    const combo = findRandomCombination(products, inputBudget);
-                    setBestCombo(combo);
+                    const combo = findBestCombination(products, inputBudget);
+                    setBestCombo(groupByQuantity(combo));
                 }
                 setLoadingContent(false);
                 setShowContent(true);
@@ -93,8 +62,8 @@ export default function BestCombination({ budget = 10000 }: { budget?: number })
             setAnimating(true);
 
             setTimeout(() => {
-                const combo = findRandomCombination(products, inputBudget);
-                setBestCombo(combo);
+                const combo = findBestCombination(products, inputBudget);
+                setBestCombo(groupByQuantity(combo));
                 setLoadingContent(false);
                 setShowContent(true);
 
@@ -103,7 +72,6 @@ export default function BestCombination({ budget = 10000 }: { budget?: number })
         }
     }, [inputBudget, isOpen, products]);
 
-    // Actualizar altura real del contenido cada vez que cambia showContent o el contenido
     useEffect(() => {
         if (showContent && contentRef.current) {
             setContentHeight(contentRef.current.scrollHeight);
@@ -124,11 +92,11 @@ export default function BestCombination({ budget = 10000 }: { budget?: number })
                 <input
                     type="number"
                     min={0}
-                    max={999999999}
+                    max={99999999}
                     value={inputBudget}
                     onChange={(e) => {
                         let val = Number(e.target.value);
-                        if (val > 999999999) val = 999999999;
+                        if (val > 99999999) val = 99999999;
                         setInputBudget(val);
                     }}
                     className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-pink-400"
@@ -181,11 +149,8 @@ export default function BestCombination({ budget = 10000 }: { budget?: number })
                                                         <p className="text-sm text-gray-500 italic">({product.theme})</p>
                                                     </div>
                                                     <button
-                                                        onClick={() => {
-                                                            for (let i = 0; i < quantity; i++) {
-                                                                addToCart(product.id);
-                                                            }
-                                                        }}
+                                                        onClick={() => addToCart(product.id, quantity)}
+
                                                         className="bg-green-500 text-white text-sm px-3 py-1 rounded hover:bg-green-600 transition"
                                                     >
                                                         Agregar {quantity > 1 ? `(${quantity})` : ""}
@@ -201,9 +166,7 @@ export default function BestCombination({ budget = 10000 }: { budget?: number })
                                             <button
                                                 onClick={() => {
                                                     bestCombo.forEach(({ product, quantity }) => {
-                                                        for (let i = 0; i < quantity; i++) {
-                                                            addToCart(product.id);
-                                                        }
+                                                        addToCart(product.id, quantity);
                                                     });
                                                 }}
                                                 className="bg-pink-600 text-white px-4 py-2 rounded hover:bg-pink-700 transition text-sm"

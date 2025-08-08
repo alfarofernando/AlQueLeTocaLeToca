@@ -1,11 +1,11 @@
 "use client";
 
 import { useProducts } from "../hooks/useProducts";
-import { Product } from "../types/ProductType";
+import { ProductType } from "../types/ProductType";
 import ProductCard from "./ProductCard"; // ⬅️ Importamos el nuevo componente estilizado
 
 interface Props {
-    onAdd: (product: Product) => void;
+    onAdd: (product: ProductType) => void;
     theme?: string;
 }
 

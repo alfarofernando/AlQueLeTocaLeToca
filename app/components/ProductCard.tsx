@@ -1,9 +1,9 @@
 import { FiPlus } from "react-icons/fi";
-import { Product } from "../types/ProductType";
+import { ProductType } from "../types/ProductType";
 
 type Props = {
-    product: Product;
-    onAdd: (product: Product) => void;
+    product: ProductType;
+    onAdd: (product: ProductType) => void;
 };
 
 export default function ProductCard({ product, onAdd }: Props) {
