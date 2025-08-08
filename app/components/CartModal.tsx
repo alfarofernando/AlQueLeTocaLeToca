@@ -9,10 +9,9 @@ import { useCart } from "../context/CartContext";
 export default function CartModal() {
     const {
         cart: items,
-        addToCart,
         updateQuantity,
         clearCart,
-        loading,
+        /*   loading, cuando se implementen spinners va a venir bien aparte para bloqueo de botones etc. */
     } = useCart();
 
     const [open, setOpen] = useState(false);

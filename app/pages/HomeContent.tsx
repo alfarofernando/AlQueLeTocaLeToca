@@ -3,17 +3,16 @@
 import ProductList from "../components/ProductList";
 import BestCombination from "../components/BestCombinations";
 import { useCart } from "../context/CartContext";
+import { ProductType } from "../types/ProductType";
 
 type HomeContentProps = {
     selectedTheme: string | null;
 };
 
 export default function HomeContent({ selectedTheme }: HomeContentProps) {
-    const { addToCart, updateQuantity } = useCart();
+    const { addToCart } = useCart();
 
-    const handleAdd = (product: any) => addToCart(product.id);
-    const handleUpdate = (product: any, newQuantity: number) => updateQuantity(product.id, newQuantity);
-
+    const handleAdd = (product: ProductType) => addToCart(product.id);
     return (
         <>
             <section className="mt-26">
