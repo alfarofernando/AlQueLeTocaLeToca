@@ -1,7 +1,7 @@
 "use client";
 
 import { useProducts } from "../hooks/useProducts";
-import { Product } from "../types/Product";
+import { Product } from "../types/ProductType";
 import ProductCard from "./ProductCard"; // ⬅️ Importamos el nuevo componente estilizado
 
 interface Props {

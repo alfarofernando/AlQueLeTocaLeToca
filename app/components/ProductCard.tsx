@@ -1,5 +1,5 @@
 import { FiPlus } from "react-icons/fi";
-import { Product } from "../types/Product";
+import { Product } from "../types/ProductType";
 
 type Props = {
     product: Product;

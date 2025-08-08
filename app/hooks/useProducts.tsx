@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Product } from "../types/Product";
+import { ProductType } from "../types/ProductType";
 
 export function useProducts() {
-    const [products, setProducts] = useState<Product[] | null>(null);
+    const [products, setProducts] = useState<ProductType[] | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<Error | null>(null);
 

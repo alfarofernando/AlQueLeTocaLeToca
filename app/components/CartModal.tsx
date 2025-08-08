@@ -3,26 +3,30 @@
 import { useState } from "react";
 import { FiShoppingCart, FiX, FiPlus, FiMinus } from "react-icons/fi";
 import { motion, AnimatePresence, easeInOut } from "framer-motion";
-import { Product } from "../types/Product";
+import { ProductType } from "../types/ProductType";
+import { useCart } from "../context/CartContext";
 
-type Props = {
-    items: Product[];
-    onClear: () => void;
-    onUpdate: (product: Product, newQuantity: number) => void;
-};
+export default function CartModal() {
+    const {
+        cart: items,
+        addToCart,
+        updateQuantity,
+        clearCart,
+        loading,
+    } = useCart();
 
-export default function CartModal({ items, onClear, onUpdate }: Props) {
     const [open, setOpen] = useState(false);
+    const [confirmOpen, setConfirmOpen] = useState(false);
 
-    // Contar cantidades manteniendo el orden de aparición
-    const quantityMap = new Map<string, number>();
+    // Crear un Map para cantidad de cada producto
+    const quantityMap = new Map<number, number>();
     items.forEach(item => {
-        quantityMap.set(item.id, (quantityMap.get(item.id) ?? 0) + 1);
+        quantityMap.set(item.id, item.quantity ?? 0);
     });
 
-    // Array sin duplicados, respetando orden de aparición
-    const uniqueProducts: Product[] = [];
-    const seen = new Set<string>();
+    // Productos únicos en orden
+    const uniqueProducts: ProductType[] = [];
+    const seen = new Set<number>();
     items.forEach(item => {
         if (!seen.has(item.id)) {
             seen.add(item.id);
@@ -30,32 +34,29 @@ export default function CartModal({ items, onClear, onUpdate }: Props) {
         }
     });
 
-    // Crear groupedItems respetando orden original y cantidades
+    // Agrupar con cantidades
     const groupedItems = uniqueProducts.map(product => ({
         product,
         quantity: quantityMap.get(product.id) ?? 0,
     }));
 
-    // Cantidad total
-    const totalQuantity = groupedItems.reduce((acc, item) => acc + item.quantity, 0);
-
-    // Total sin descuento
+    const totalQuantity = groupedItems.reduce((acc, i) => acc + i.quantity, 0);
     const total = groupedItems.reduce(
-        (acc, item) => acc + item.product.price * item.quantity,
+        (acc, i) => acc + i.product.price * i.quantity,
         0
     );
 
-    // Descuento mayorista si totalQuantity >= 20
-    const discountRate = totalQuantity >= 20 ? 0.20 : 0;
+    const discountRate = totalQuantity >= 20 ? 0.2 : 0;
     const discountAmount = total * discountRate;
     const finalTotal = total - discountAmount;
 
-    // Mensaje WhatsApp
     const message = encodeURIComponent(
         groupedItems
             .map(
                 (item) =>
-                    `${item.quantity}x ${item.product.name}: $${(item.product.price * item.quantity).toFixed(2)}`
+                    `${item.quantity}x ${item.product.name}: $${(
+                        item.product.price * item.quantity
+                    ).toFixed(2)}`
             )
             .join("\n") +
         `\n\nTotal: $${total.toFixed(2)}` +
@@ -65,10 +66,28 @@ export default function CartModal({ items, onClear, onUpdate }: Props) {
             : "")
     );
 
-    const handleQuantityChange = (product: Product, delta: number) => {
+    const handleQuantityChange = (product: ProductType, delta: number) => {
         const current = quantityMap.get(product.id) ?? 0;
         const newQuantity = current + delta;
-        onUpdate(product, newQuantity);
+        if (newQuantity < 0) return; // no negativos
+        updateQuantity(product.id, newQuantity);
+    };
+
+    // Abrir modal de confirmación para vaciar carrito
+    const handleClearCartClick = () => setConfirmOpen(true);
+
+    // Confirmar vaciar carrito
+    const confirmClearCart = async () => {
+        await clearCart();
+        setConfirmOpen(false);
+        setOpen(false);
+    };
+
+    // Enviar pedido y vaciar carrito luego
+    const handleSendOrder = () => {
+        window.open(`https://wa.me/549011?text=${message}`, "_blank");
+        clearCart();
+        setOpen(false);
     };
 
     return (
@@ -79,7 +98,7 @@ export default function CartModal({ items, onClear, onUpdate }: Props) {
                 initial={{ scale: 1 }}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className="fixed top-2 right-2 bg-pink-600 text-white rounded-full p-2 shadow-xl focus:outline-none focus:ring-4 focus:ring-pink-400 transition flex items-center justify-center z-50 text-lg"
+                className="bg-pink-600 text-white rounded-full p-2 shadow-xl focus:outline-none focus:ring-4 focus:ring-pink-400 transition flex items-center justify-center z-50 text-lg"
             >
                 <FiShoppingCart size={24} />
                 {items.length > 0 && (
@@ -95,11 +114,9 @@ export default function CartModal({ items, onClear, onUpdate }: Props) {
                 )}
             </motion.button>
 
-            {/* Sidebar slide-in */}
             <AnimatePresence>
                 {open && (
                     <>
-                        {/* Overlay */}
                         <motion.div
                             className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40"
                             initial={{ opacity: 0 }}
@@ -108,16 +125,14 @@ export default function CartModal({ items, onClear, onUpdate }: Props) {
                             onClick={() => setOpen(false)}
                         />
 
-                        {/* Sidebar */}
                         <motion.div
                             initial={{ x: "100%" }}
                             animate={{ x: 0 }}
                             exit={{ x: "100%" }}
                             transition={{ type: "tween", duration: 0.5, ease: easeInOut }}
-                            className="fixed top-0 right-0 h-full w-full max-w-md bg-white/80 backdrop-blur-lg shadow-2xl border-l border-white/30 z-50 p-6 "
+                            className="fixed top-0 right-0 h-full w-full max-w-md bg-white/80 backdrop-blur-lg shadow-2xl border-l border-white/30 z-50 p-6"
                             onClick={(e) => e.stopPropagation()}
                         >
-                            {/* Botón cerrar */}
                             <button
                                 onClick={() => setOpen(false)}
                                 aria-label="Cerrar carrito"
@@ -183,26 +198,63 @@ export default function CartModal({ items, onClear, onUpdate }: Props) {
                                     <div className="flex justify-between">
                                         <button
                                             className="px-4 py-2 bg-red-500 text-white rounded-lg shadow hover:bg-red-600 transition"
-                                            onClick={() => {
-                                                onClear();
-                                                setOpen(false);
-                                            }}
+                                            onClick={handleClearCartClick}
                                         >
                                             Vaciar
                                         </button>
-                                        <a
+                                        <button
                                             className="px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition"
-                                            href={`https://wa.me/549011?text=${message}`}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
+                                            onClick={handleSendOrder}
                                         >
                                             Enviar pedido ahora
-                                        </a>
+                                        </button>
                                     </div>
                                 </>
                             ) : (
                                 <p className="text-center text-gray-700">No hay productos en el carrito.</p>
                             )}
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
+
+            <AnimatePresence>
+                {confirmOpen && (
+                    <>
+                        <motion.div
+                            className="fixed inset-0 bg-black/50 z-50"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setConfirmOpen(false)}
+                        />
+                        <motion.div
+                            className="fixed inset-0 flex items-center justify-center z-50"
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.8, opacity: 0 }}
+                        >
+
+                            <div className="bg-white rounded-lg p-6 max-w-sm w-full shadow-lg text-center">
+                                <p className="mb-4 text-lg font-medium">
+                                    ¿Estás seguro que quieres vaciar el carrito?
+                                </p>
+                                <div className="flex justify-center gap-4 text-white">
+                                    <button
+                                        onClick={confirmClearCart}
+                                        className="px-3 py-1 bg-red-400 text-wheat rounded hover:bg-red-500 transition"
+                                    >
+                                        Vaciar
+                                    </button>
+                                    <button
+                                        onClick={() => setConfirmOpen(false)}
+                                        className="px-5 py-3 bg-green-500 rounded hover:bg-green-700 transition"
+                                    >
+                                        Seguir Comprando
+                                    </button>
+
+                                </div>
+                            </div>
                         </motion.div>
                     </>
                 )}

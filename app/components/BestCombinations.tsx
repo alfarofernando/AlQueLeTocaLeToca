@@ -2,8 +2,9 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useProducts } from "../hooks/useProducts";
-import { Product } from "../types/Product";
+import { ProductType } from "../types/ProductType";
 import { motion, AnimatePresence } from "framer-motion";
+import { useCart } from "../context/CartContext";
 
 export default function BestCombination({ budget = 10000 }: { budget?: number }) {
     const { products, loading, error } = useProducts();
@@ -12,23 +13,25 @@ export default function BestCombination({ budget = 10000 }: { budget?: number })
     const [showContent, setShowContent] = useState<boolean>(false);
     const [loadingContent, setLoadingContent] = useState<boolean>(false);
     const [animating, setAnimating] = useState<boolean>(false);
-    const [bestCombo, setBestCombo] = useState<{ product: Product, quantity: number }[]>([]);
+    const [bestCombo, setBestCombo] = useState<{ product: ProductType, quantity: number }[]>([]);
     const contentRef = useRef<HTMLDivElement>(null);
     const [contentHeight, setContentHeight] = useState<number>(0);
+    const { addToCart } = useCart();
+
 
     // Función que busca una combinación aleatoria válida, no la mejor exacta
-    const findRandomCombination = (products: Product[], maxBudget: number): { product: Product, quantity: number }[] => {
+    const findRandomCombination = (products: ProductType[], maxBudget: number): { product: ProductType, quantity: number }[] => {
         if (!products.length) return [];
 
         const filtered = products.filter((p) => p.price <= maxBudget);
         if (!filtered.length) return [];
 
-        let bestCombo: { product: Product, quantity: number }[] = [];
+        let bestCombo: { product: ProductType, quantity: number }[] = [];
         let bestTotal = 0;
         const attempts = 300;
 
         for (let i = 0; i < attempts; i++) {
-            let combo: Product[] = [];
+            let combo: ProductType[] = [];
             let total = 0;
 
             while (true) {
@@ -41,7 +44,7 @@ export default function BestCombination({ budget = 10000 }: { budget?: number })
 
             if (total > bestTotal) {
                 // Agrupar
-                const grouped = combo.reduce<{ [key: string]: { product: Product, quantity: number } }>((acc, item) => {
+                const grouped = combo.reduce<{ [key: string]: { product: ProductType, quantity: number } }>((acc, item) => {
                     if (acc[item.id]) {
                         acc[item.id].quantity += 1;
                     } else {
@@ -121,11 +124,17 @@ export default function BestCombination({ budget = 10000 }: { budget?: number })
                 <input
                     type="number"
                     min={0}
+                    max={999999999}
                     value={inputBudget}
-                    onChange={(e) => setInputBudget(Number(e.target.value))}
+                    onChange={(e) => {
+                        let val = Number(e.target.value);
+                        if (val > 999999999) val = 999999999;
+                        setInputBudget(val);
+                    }}
                     className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-pink-400"
                     placeholder="Ingresa tu presupuesto"
                 />
+
                 <button
                     onClick={toggleOpen}
                     className="px-2 py-1 bg-pink-600 text-white rounded-md font-medium text-nowrap hover:bg-pink-700 transition"
@@ -174,7 +183,7 @@ export default function BestCombination({ budget = 10000 }: { budget?: number })
                                                     <button
                                                         onClick={() => {
                                                             for (let i = 0; i < quantity; i++) {
-                                                                console.log("Agregar al carrito:", product);
+                                                                addToCart(product.id);
                                                             }
                                                         }}
                                                         className="bg-green-500 text-white text-sm px-3 py-1 rounded hover:bg-green-600 transition"
@@ -185,9 +194,23 @@ export default function BestCombination({ budget = 10000 }: { budget?: number })
                                             ))}
                                         </ul>
 
-                                        <p className="mt-4 font-semibold">
-                                            Total: ${bestCombo.reduce((sum, p) => sum + p.product.price * p.quantity, 0)}
-                                        </p>
+                                        <div className="flex justify-between items-center mt-4">
+                                            <p className="font-semibold">
+                                                Total: ${bestCombo.reduce((sum, p) => sum + p.product.price * p.quantity, 0)}
+                                            </p>
+                                            <button
+                                                onClick={() => {
+                                                    bestCombo.forEach(({ product, quantity }) => {
+                                                        for (let i = 0; i < quantity; i++) {
+                                                            addToCart(product.id);
+                                                        }
+                                                    });
+                                                }}
+                                                className="bg-pink-600 text-white px-4 py-2 rounded hover:bg-pink-700 transition text-sm"
+                                            >
+                                                Agregar toda la lista
+                                            </button>
+                                        </div>
                                     </>
                                 )}
                             </>
