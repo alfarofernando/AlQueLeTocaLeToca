@@ -8,6 +8,7 @@ import React, {
     ReactNode,
 } from "react";
 import { ProductType } from "../types/ProductType";
+import toast from "react-hot-toast";
 
 type CartContextType = {
     cart: ProductType[];
@@ -62,15 +63,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
             if (res.ok && data.success) {
                 setCart(data.cart);
+                toast.success("Producto agregado al carrito ✅");
             } else if (res.status === 400 && data.message?.includes("ya existe")) {
-                // Producto ya existe → incrementar cantidad
                 const currentQty = cart.find(p => p.id === productId)?.quantity ?? 0;
                 await updateQuantity(productId, currentQty + quantity);
+                toast.success("Cantidad actualizada en el carrito 🛒");
             } else {
                 console.error("No se pudo agregar al carrito:", data.message);
+                toast.error("No se pudo agregar al carrito");
             }
         } catch (error) {
             console.error("Error en addToCart:", error);
+            toast.error("Error de conexión con el servidor");
         }
     };
 

@@ -1,162 +1,136 @@
-import { useState } from "react";
+"use client";
+
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence, easeInOut } from "framer-motion";
-import CartModal from "./CartModal";
 import { FiMenu, FiX } from "react-icons/fi";
+import Link from "next/link";
+import CartModal from "./CartModal";
 
 const themes = [
-    { key: "diversion", label: "Diversión" },
-    { key: "beauty", label: "Belleza" },
-    { key: "fiesta", label: "Fiesta" },
-    { key: "romantic", label: "Romántico" },
-    { key: "relax", label: "Relajado" },
+    { key: "adolescentes", label: "Adolescentes" },
+    { key: "babyshower", label: "Babyshower" },
+    { key: "despedida", label: "Despedida Solterx" },
+    { key: "casamiento", label: "Casamiento" },
+    { key: "Levanta-Animo", label: "Levanta Animo" },
 ];
 
-type NavbarProps = {
-    selectedTheme: string | null;
-    onSelectTheme: (theme: string | null) => void;
-};
-
-export default function Navbar({ selectedTheme, onSelectTheme }: NavbarProps) {
+export default function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false);
-    const [hovered, setHovered] = useState<string | null>(null);
+
+    useEffect(() => {
+        document.body.style.overflow = menuOpen ? "hidden" : "auto";
+    }, [menuOpen]);
 
     return (
-        <nav className="fixed top-0 left-0 w-full z-50  shadow-md rounded-b-xl px-4 py-3">
-            <div className="flex items-center w-full">
-                {/* Botón hamburguesa móvil */}
-                <button
-                    className="sm:hidden p-2 rounded-md hover:bg-gray-200 focus:outline-none"
-                    onClick={() => setMenuOpen(!menuOpen)}
-                    aria-label="Toggle menu"
+        <nav className="sticky inset-0 w-full z-50 bg-[#328AC2] shadow-md">
+            <div className="flex items-center justify-between mx-6">
+                {/* Logo */}
+                <Link href="/">
+                    <img
+                        src="/LaSuerteEsLoca.png"
+                        alt="La Suerte es Loca"
+                        width={60}
+                        height={60}
+                        className="hover:opacity-80 transition-opacity"
+                    />
+                </Link>
+
+
+                {/* Separador vertical */}
+                <div className="w-px h-6 bg-white/50 mx-4" />
+
+                {/* Temáticas escritorio */}
+                <div className="hidden sm:flex gap-6 items-center">
+                    {themes.map((theme) => (
+                        <Link
+                            key={theme.key}
+                            href={`/products?theme=${theme.key}`}
+                            className="text-sm font-semibold text-white hover:text-[#CA8B41] transition-colors"
+                        >
+                            {theme.label}
+                        </Link>
+                    ))}
+                </div>
+
+
+                {/* Separador vertical */}
+                <div className="w-px h-6 bg-white/50 mx-4" />
+                {/* Link Sobre Nosotros */}
+                <Link
+                    href="/nosotros"
+                    className="text-sm font-semibold text-white hover:text-[#CA8B41] transition-colors"
                 >
-                    {menuOpen ? (
-                        <FiX className="w-6 h-6 text-pink-600" />
-                    ) : (
-                        <FiMenu className="w-6 h-6 text-pink-600" />
-                    )}
-                </button>
+                    Sobre Nosotros
+                </Link>
 
-                {/* Menú central */}
-                <div className="flex flex-1 justify-center sm:justify-center gap-4 mt-3 sm:mt-0">
-                    {themes.map((theme) => {
-                        const isSelected = selectedTheme === theme.key;
-                        const isHovered = hovered === theme.key;
-
-                        return (
-                            <button
-                                key={theme.key}
-                                onClick={() => onSelectTheme(theme.key)}
-                                onMouseEnter={() => setHovered(theme.key)}
-                                onMouseLeave={() => setHovered(null)}
-                                className={`relative px-3 py-1 mb-2 sm:mb-0 text-sm rounded-lg font-medium transition-colors duration-200 whitespace-nowrap ${isSelected ? "text-pink-600" : "text-gray-700 hover:text-pink-600"
-                                    } hidden sm:inline-flex`} // <-- esta clase oculta en móvil y muestra desde sm
-                                style={{ background: "transparent" }}
-                            >
-                                {theme.label}
-                                {(isSelected || isHovered) && (
-                                    <motion.div
-                                        layoutId="underline"
-                                        className="absolute bottom-0 left-0 right-0 h-[2px] bg-pink-600 rounded"
-                                        initial={{ width: 0 }}
-                                        animate={{ width: "100%" }}
-                                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                                    />
-                                )}
-                            </button>
-                        );
-                    })}
-
+                {/* Separador vertical */}
+                <div className="w-px h-6 bg-white/50 mx-4" />
+                {/* Carrito + menú móvil */}
+                <div className="flex items-center gap-4">
+                    <CartModal />
                     <button
-                        onClick={() => onSelectTheme(null)}
-                        onMouseEnter={() => setHovered("all")}
-                        onMouseLeave={() => setHovered(null)}
-                        className="relative px-3 py-1 mb-2 sm:mb-0 text-sm rounded-lg bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium transition-colors duration-200 whitespace-nowrap hidden sm:inline-flex" // <-- igual acá
+                        className="sm:hidden p-2 rounded-md hover:bg-[#7B9CAE]/30"
+                        onClick={() => setMenuOpen(!menuOpen)}
+                        aria-label="Toggle menu"
                     >
-                        Ver todos
-                        {hovered === "all" && (
-                            <motion.div
-                                layoutId="underline"
-                                className="absolute bottom-0 left-0 right-0 h-[2px] bg-pink-600 rounded"
-                                initial={{ width: 0 }}
-                                animate={{ width: "100%" }}
-                                transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                            />
+                        {menuOpen ? (
+                            <FiX className="w-6 h-6 text-white" />
+                        ) : (
+                            <FiMenu className="w-6 h-6 text-white" />
                         )}
                     </button>
                 </div>
-
-                {/* Carrito */}
-                <div className="ml-auto sm:ml-0">
-                    <CartModal />
-                </div>
             </div>
 
-            {/* Menú móvil con slide */}
+            {/* Menú móvil */}
             <AnimatePresence>
                 {menuOpen && (
                     <>
-                        {/* Fondo semitransparente */}
                         <motion.div
-                            className="fixed inset-0 bg-black/30 z-40"
+                            className="fixed inset-0 bg-black/40 z-40"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => setMenuOpen(false)}
                         />
-
-                        {/* Menú deslizante */}
                         <motion.div
-                            className="fixed top-0 left-0 h-full w-full bg-white shadow-xl z-50 p-6 flex flex-col gap-6"
-                            initial={{ x: "-100%" }}
+                            className="fixed top-0 right-0 h-full w-[75%] sm:w-[300px] bg-[#328AC2] shadow-lg z-50 p-6 flex flex-col gap-6 overflow-y-auto"
+                            initial={{ x: "100%" }}
                             animate={{ x: 0 }}
-                            exit={{ x: "-100%" }}
+                            exit={{ x: "100%" }}
                             transition={{ type: "tween", duration: 0.4, ease: easeInOut }}
-                            onClick={(e) => e.stopPropagation()}
                         >
-                            {/* Encabezado del menú */}
-                            <div className="flex items-center justify-between">
-                                <h2 className="text-xl font-semibold text-gray-800">Selecciona una temática</h2>
-                                <button
-                                    onClick={() => setMenuOpen(false)}
-                                    className="text-gray-600 hover:text-pink-600 transition-colors"
-                                    aria-label="Cerrar menú"
-                                >
-                                    <FiX className="w-6 h-6" />
-                                </button>
-                            </div>
+                            {/* Título móvil */}
+                            <h3 className="sm:hidden text-white text-lg font-bold px-4 mb-2 border-b border-white/30">
+                                Temáticas
+                            </h3>
 
-                            {/* Botones de temas */}
-                            <div className="flex flex-col gap-3">
-                                {themes.map((theme) => (
-                                    <button
-                                        key={theme.key}
-                                        onClick={() => {
-                                            onSelectTheme(theme.key);
-                                            setMenuOpen(false);
-                                        }}
-                                        className={`px-3 py-2 text-base rounded-lg font-medium transition-colors duration-200 whitespace-nowrap ${selectedTheme === theme.key
-                                            ? "bg-pink-600 text-white"
-                                            : "bg-pink-400 hover:bg-pink-500 text-white"
-                                            }`}
-                                    >
-                                        {theme.label}
-                                    </button>
-                                ))}
-                                <button
-                                    onClick={() => {
-                                        onSelectTheme(null);
-                                        setMenuOpen(false);
-                                    }}
-                                    className="px-3 py-2 text-base rounded-lg bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium transition-colors duration-200 whitespace-nowrap"
+                            {themes.map((theme) => (
+                                <Link
+                                    key={theme.key}
+                                    href={`/products?theme=${theme.key}`}
+                                    className="px-4 py-2 font-semibold text-white hover:bg-[#7B9CAE]/30 rounded-md"
+                                    onClick={() => setMenuOpen(false)}
                                 >
-                                    Ver todos
-                                </button>
-                            </div>
+                                    {theme.label}
+                                </Link>
+                            ))}
+
+                            {/* Separador y nuevo título para Nosotros */}
+                            <h3 className="sm:hidden text-white text-lg font-bold px-4 mt-6 mb-2 border-b border-white/30">
+                                Más Información
+                            </h3>
+                            <Link
+                                href="/nosotros"
+                                className="px-4 py-2 font-semibold text-white hover:bg-[#7B9CAE]/30 rounded-md"
+                                onClick={() => setMenuOpen(false)}
+                            >
+                                Sobre Nosotros
+                            </Link>
                         </motion.div>
                     </>
                 )}
             </AnimatePresence>
-
         </nav>
     );
 }

@@ -1,28 +1,40 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { ProductType } from "../types/ProductType";
 
-export function useProducts() {
-    const [products, setProducts] = useState<ProductType[] | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
+export function useProducts(theme?: string) {
+    const [products, setProducts] = useState<ProductType[]>([]);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
 
     useEffect(() => {
-        async function fetchProducts() {
+        const fetchProducts = async () => {
             setLoading(true);
-            setError(null);
+            const startTime = Date.now();
+
             try {
-                const response = await axios.get("/api/products");
-                setProducts(response.data);
+                const url = theme
+                    ? `/api/products?theme=${theme}`
+                    : "/api/products";
+                const res = await fetch(url);
+                if (!res.ok) throw new Error("Error al cargar productos");
+                const data = await res.json();
+                setProducts(data);
             } catch (err) {
                 setError(err as Error);
             } finally {
-                setLoading(false);
-            }
-        }
+                const elapsed = Date.now() - startTime;
+                const minDelay = 3000; // 2 segundos
+                const remaining = minDelay - elapsed;
 
+                if (remaining > 0) {
+                    setTimeout(() => setLoading(false), remaining);
+                } else {
+                    setLoading(false);
+                }
+            }
+        };
         fetchProducts();
-    }, []);
+    }, [theme]);
 
     return { products, loading, error };
 }

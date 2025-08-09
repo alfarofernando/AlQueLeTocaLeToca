@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FiShoppingCart, FiX, FiPlus, FiMinus } from "react-icons/fi";
 import { motion, AnimatePresence, easeInOut } from "framer-motion";
 import { ProductType } from "../types/ProductType";
 import { useCart } from "../context/CartContext";
+import AfterSendModal from "./AfterSendModal";
+
 
 export default function CartModal() {
     const {
@@ -16,6 +18,7 @@ export default function CartModal() {
 
     const [open, setOpen] = useState(false);
     const [confirmOpen, setConfirmOpen] = useState(false);
+    const [afterSendOpen, setAfterSendOpen] = useState(false);
 
     // Crear un Map para cantidad de cada producto
     const quantityMap = new Map<number, number>();
@@ -84,13 +87,23 @@ export default function CartModal() {
 
     // Enviar pedido y vaciar carrito luego
     const handleSendOrder = () => {
-        window.open(`https://wa.me/549011?text=${message}`, "_blank");
-        clearCart();
+        window.open(`https://wa.me/5491164094722?text=${message}`, "_blank");
+        setAfterSendOpen(true);
         setOpen(false);
     };
 
+    const handleClearCartAndClose = async () => {
+        await clearCart();
+    };
+
+    useEffect(() => {
+        if (open) {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+    }, [open]);
+
     return (
-        <>
+        <div>
             <motion.button
                 onClick={() => setOpen(true)}
                 aria-label="Abrir carrito"
@@ -221,20 +234,20 @@ export default function CartModal() {
                 {confirmOpen && (
                     <>
                         <motion.div
-                            className="fixed inset-0 bg-black/50 z-50"
+                            className="fixed inset-0 flex items-center justify-center  bg-black/50 z-50"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => setConfirmOpen(false)}
                         />
                         <motion.div
-                            className="fixed inset-0 flex items-center justify-center z-50"
+                            className="fixed inset-0 flex items-center justify-center  z-50"
                             initial={{ scale: 0.8, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.8, opacity: 0 }}
                         >
 
-                            <div className="bg-white rounded-lg p-6 max-w-sm w-full shadow-lg text-center">
+                            <div className="bg-white rounded-lg p-6 max-w-sm w-full m shadow-lg text-center">
                                 <p className="mb-4 text-lg font-medium">
                                     ¿Estás seguro que quieres vaciar el carrito?
                                 </p>
@@ -255,9 +268,21 @@ export default function CartModal() {
                                 </div>
                             </div>
                         </motion.div>
+
+
                     </>
                 )}
             </AnimatePresence>
-        </>
+            <AfterSendModal
+                open={afterSendOpen}
+                onClose={() => setAfterSendOpen(false)}
+                onClearCart={handleClearCartAndClose}
+                onResendOrder={handleSendOrder}
+                onContinueChoosing={() => {
+                    setAfterSendOpen(false);
+                    setOpen(true);
+                }}
+            />
+        </div>
     );
 }

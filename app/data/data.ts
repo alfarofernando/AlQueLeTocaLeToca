@@ -1,241 +1,60 @@
 import { ProductType } from "../types/ProductType"
 
 export const Producto: ProductType[] = [
-    {
-        id: 1,
-        theme: "diversion",
-        name: "Anti-Aburrimiento",
-        description: "Incluye slime en diferentes texturas y colores, variedad de stickers divertidos y temáticos, mochi suave y coleccionable, burbujero para hacer burbujas de jabón, mini rompecabezas, cartas coleccionables, pelota antiestrés, y mini juegos de memoria.",
-        price: 3000,
-    },
-    {
-        id: 2,
-        theme: "beauty",
-        name: "Selfie",
-        description: "Kit perfecto para amantes de las selfies: lente de clip para cámara que mejora la calidad, espejo mini compacto para retoques rápidos, anillo LED ajustable para iluminación, mini trípode para celular, filtros de colores, stickers para personalizar fotos, paño de microfibra para limpieza, y soporte para teléfono.",
-        price: 3500,
-    },
-    {
-        id: 3,
-        theme: "beauty",
-        name: "Glitter",
-        description: "Brillos cosméticos para un toque brillante, esmaltes de uñas con colores vibrantes, mini perfume de fragancia suave, tatuajes temporales modernos, brillo labial, purpurina corporal, máscara facial luminosa, y bandas para el cabello con glitter.",
-        price: 4000,
-    },
-    {
-        id: 4,
-        theme: "fiesta",
-        name: "Fiestero",
-        description: "Pulsera LED con luces de colores, vinchas locas con diseños únicos, burbujas para jugar y decorar fiestas, lentes de sol fluorescentes, gorro de fiesta, confeti biodegradable, silbatos de celebración, y tatuajes temporales de neón.",
-
-        price: 3500,
-    },
-    {
-        id: 5,
-        theme: "romantic",
-        name: "Chismes",
-        description: "Libretita para secretos, birome con diseño especial, stickers secretos, mini agenda, bolígrafo con luces LED, mini espejo de bolsillo, portallaves personalizado, y pañuelo estampado para el pelo.",
-
-        price: 2500,
-    },
-    {
-        id: 6,
-        theme: "diversion",
-        name: "K-Pop",
-        description: "Stickers oficiales de idols, pulsera con frases motivadoras, chapas coleccionables, posters miniatura, llaveros temáticos, set de pines, foto cards, cinta para el pelo con diseño K-Pop, y mini álbum de fotos.",
-
-        price: 3000,
-    },
-    {
-        id: 7,
-        theme: "diversion",
-        name: "TikTok",
-        description: "Accesorios para bailes y videos creativos, anillo de luz, antifaz para retos, soporte para celular, filtros para cámara, mini trípode, pegatinas para personalizar videos, tarjeta con frases virales, y cinta reflectante para ropa.",
-
-        price: 4000,
-    },
-    {
-        id: 8,
-        theme: "romantic",
-        name: "Romántico Teen",
-        description: "Anillo corazón delicado, mini carta de amor, confites con envoltorios románticos, vela aromática pequeña, collar con dije, tarjeta con mensaje personalizado, caja de recuerdos, flores secas decorativas, y pulsera de amistad.",
-
-        price: 2500,
-    },
-    {
-        id: 9,
-        theme: "diversion",
-        name: "Emoji",
-        description: "Set de stickers emojis variados, goma divertida para la escuela, broche alegre para ropa, lápiz con diseño emoji, cartera pequeña, llavero con carita feliz, cuaderno con portada emoji, y pin para mochila.",
-
-        price: 2500,
-    },
-    {
-        id: 10,
-        theme: "diversion",
-        name: "Gamer Girl",
-        description: "Calco gamer exclusivo, joystick mini decorativo, golosinas energéticas, pulsera temática, soporte para auriculares, stickers de juegos, llavero gamer, gorra con logo de juego, y funda para celular gamer.",
-
-        price: 3000,
-    },
-    {
-        id: 11,
-        theme: "romantic",
-        name: "Mini kit dulzura",
-        description: "Chupetín de frutas, jabón artesanal con aroma suave, llaverito personalizado, mini peluche, tarjeta de agradecimiento, y una bolsita decorativa para regalo.",
-
-        price: 2500,
-    },
-    {
-        id: 12,
-        theme: "relax",
-        name: "Recuerdo del bebé",
-        description: "Vela pequeña decorativa, saquito aromático con lavanda, mini sonajero, set de pegatinas para bebés, chupete de silicona, y una tarjeta con dedicatoria personalizada.",
-
-        price: 2500,
-    },
-    {
-        id: 13,
-        theme: "relax",
-        name: "Relax mamá invitada",
-        description: "Té relajante en bolsitas, bálsamo labial hidratante, pañuelito perfumado con esencia floral, crema de manos pequeña, sales de baño, y una vela aromática para crear ambiente.",
-
-        price: 2500,
-    },
-    {
-        id: 14,
-        theme: "romantic",
-        name: "Bienvenidx",
-        description: "Tarjetita personalizada con mensaje especial, caramelos variados, lazo decorativo, mini peluche, una pequeña planta suculenta, y un set de stickers temáticos.",
-
-        price: 2000,
-    },
-    {
-        id: 15,
-        theme: "relax",
-        name: "Aromático",
-        description: "Jabón natural artesanal, esencia concentrada para ambientador, flor seca decorativa, bolsita de algodón para aroma, aceite esencial, y una vela perfumada en miniatura.",
-
-        price: 2500,
-    },
-    {
-        id: 16,
-        theme: "diversion",
-        name: "Mini entretenimiento",
-        description: "Burbujero para hacer pompas, sticker temático para bebés, juguete sonoro pequeño, libro para colorear, set de crayones, y una pelota antiestrés para manos pequeñas.",
-
-        price: 2500,
-    },
-    {
-        id: 17,
-        theme: "diversion",
-        name: "Animalitos",
-        description: "Mini muñeco de felpa, stickers con diseños de animales, dulce artesanal, libro infantil pequeño, tarjeta educativa, y una pulsera de cuentas coloridas.",
-
-        price: 2500,
-    },
-    {
-        id: 18,
-        theme: "diversion",
-        name: "Colores",
-        description: "...",
-        price: 2500,
-    },
-    {
-        id: 19,
-        theme: "relax",
-        name: "Sorpresa baby",
-        description: "Crayones de cera no tóxicos, hoja para pintar con dibujos infantiles, mochi suave de colores, lápices de colores, mini cuaderno para dibujo, y stickers para decorar.",
-
-        price: 2500,
-    },
-    {
-        id: 20,
-        theme: "diversion",
-        name: "Hermanito",
-        description: "Dulces surtidos, calco para personalizar objetos, pulsera de colores vivos, mini juguete, llavero temático, y un set de pegatinas coleccionables.",
-
-        price: 2500,
-    },
-    {
-        id: 21,
-        theme: "beauty",
-        name: "Chismosas",
-        description: "Brillo labial, espejo compacto, sticker picante, mini perfume, lima de uñas, pinza para cejas, y toallita refrescante.",
-
-        price: 3000,
-    },
-    {
-        id: 22,
-        theme: "romantic",
-        name: "Sexy",
-        description: "Tatuaje temporal, chupetín hot, antifaz de encaje, aceite corporal pequeño, mini lencería, perfume en roll-on, y juego de cartas picante.",
-
-        price: 3000,
-    },
-    {
-        id: 23,
-        theme: "relax",
-        name: "Anti-Resaca",
-        description: "Ibuprofeno, chicle refrescante, toallita húmeda, botella pequeña de agua, cápsulas de vitaminas, café instantáneo, y barrita energética.",
-
-        price: 2500,
-    },
-    {
-        id: 24,
-        theme: "fiesta",
-        name: "Loca Noche",
-        description: "Calco divertido, vincha fluorescente, mini shot de licor, gafas de neón, glow sticks, tatuajes temporales, y silbato de fiesta.",
-
-        price: 3500,
-    },
-    {
-        id: 25,
-        theme: "beauty",
-        name: "Bride Team",
-        description: "Scrunchie elegante, sticker personalizado, labial de larga duración, copa de plástico decorativa, pulsera de strass, velo mini, y confeti biodegradable.",
-
-        price: 3000,
-    },
-    {
-        id: 26,
-        theme: "diversion",
-        name: "Rompe el hielo",
-        description: "Retos picantes en tarjetas, carta divertida, sticker humorístico, dados de preguntas, mini botella de burbujas, tatuaje temporal, y confites sorpresa.",
-
-        price: 2500,
-    },
-    {
-        id: 27,
-        theme: "beauty",
-        name: "Selfie Party",
-        description: "Marco mini para selfies, anillo LED recargable, frase divertida en tarjeta, lentes de sol originales, mini trípode, stickers para cámara, y pulsera luminosa.",
-
-        price: 3500,
-    },
-    {
-        id: 28,
-        theme: "fiesta",
-        name: "Macho Man",
-        description: "Mini shot de licor, calco temático, desodorante pequeño, llavero metálico, pañuelo bandana, mini cartera, y barrita energética.",
-
-        price: 3000,
-    },
-    {
-        id: 29,
-        theme: "romantic",
-        name: "Supervivencia",
-        description: "Preservativo, pañuelito de papel, chiste en tarjeta, botella de agua pequeña, barrita nutritiva, toallita húmeda, y mini desodorante.",
-
-        price: 3000,
-    },
-    {
-        id: 30,
-        theme: "fiesta",
-        name: "Fiesta Salvaje",
-        description: "Gafas locas fluorescentes, pulsera LED, pastilla efervescente, glow sticks, tatuajes temporales, silbato de fiesta, y confeti brillante.",
-
-        price: 3500,
-    },
+    { id: 50, theme: "Levanta-Animo", name: "Kit Para Compartir", description: "Dos golosinas para compartir, frase 'Dale a otro' en tarjeta decorativa, mini stickers, y otros elementos para promover la solidaridad y la amistad.", price: 1500, value: 1 },
+    { id: 41, theme: "Levanta-Animo", name: "Kit Gratitud", description: "Frase positiva inspiradora para el día a día, dulces variados para endulzar el momento, tarjeta de agradecimiento, y pequeños detalles que invitan a la reflexión y gratitud constante.", price: 1800, value: 2 },
+    { id: 45, theme: "Levanta-Animo", name: "Kit Buen Día", description: "Café instantáneo para despertar, galletita dulce para acompañar, mini frase motivacional, y pequeños detalles para empezar el día con energía positiva y buena actitud.", price: 1800, value: 2 },
+    { id: 48, theme: "Levanta-Animo", name: "Kit Volvé a Empezar", description: "Lápiz para escribir nuevos comienzos, goma para borrar errores, papel con mensaje alentador, y detalles para motivar a tomar un nuevo rumbo con esperanza y confianza.", price: 1800, value: 2 },
+    { id: 49, theme: "Levanta-Animo", name: "Kit Alegría Simple", description: "Dibujo de sonrisa alegre, chicle para compartir, calco con mensaje positivo, mini nota de ánimo, y otros detalles para contagiar felicidad y buen humor.", price: 1800, value: 2 },
+    { id: 54, theme: "Levanta-Animo", name: "Kit de Amistad", description: "Pulsera simbólica de amistad, dulce para compartir, tarjeta personalizada con mensaje afectuoso, y pequeños detalles para fortalecer vínculos y celebrar la compañía.", price: 1800, value: 2 },
+    { id: 56, theme: "Levanta-Animo", name: "Kit Sonrisas", description: "Caramelo dulce, calco con carita feliz, chiste para alegrar el día, tarjeta con mensaje positivo, y detalles para contagiar alegría y buen ánimo.", price: 1800, value: 2 },
+    { id: 44, theme: "Levanta-Animo", name: "Kit Bendición", description: "Versículo bíblico inspirador, mini cruz de madera, dulce para compartir, estampita religiosa, y tarjeta con bendición especial para llevar consigo en el día a día.", price: 1950, value: 3 },
+    { id: 14, theme: "babyshower", name: "Bienvenidx", description: "Tarjetita personalizada de bienvenida, caramelos dulces y coloridos, lazo decorativo para envolver detalles, etiquetas para regalos, pequeños adornos en colores suaves, y objetos delicados para recibir a los invitados con cariño.", price: 1950, value: 3 },
+    { id: 46, theme: "Levanta-Animo", name: "Kit Motivación", description: "Tarjeta con frase motivadora, caramelos energéticos, señalador para libros, y pequeños objetos que invitan a seguir adelante con fe y esperanza renovada.", price: 1950, value: 3 },
+    { id: 51, theme: "Levanta-Animo", name: "Kit Luz", description: "Velita pequeña para iluminar espacios, mensaje positivo impreso en tarjeta, fósforo decorativo, y accesorios para crear un ambiente cálido y lleno de esperanza.", price: 1950, value: 3 },
+    { id: 8, theme: "adolescentes", name: "Kit Romántico Teen", description: "Anillo con forma de corazón, mini carta para notas románticas, confites para compartir, velas aromáticas, stickers con mensajes dulces, mini álbum para fotos, pulseras de amistad, y más accesorios para crear momentos tiernos y especiales con esa persona especial.", price: 2100, value: 4 },
+    { id: 9, theme: "adolescentes", name: "Kit Emoji", description: "Stickers de emojis para decorar tus cosas, goma divertida con formas originales, broches con caras divertidas, libretas con caritas, llaveros temáticos, bolígrafos con diseños únicos, y otros accesorios para expresarte con estilo y humor en el día a día.", price: 2100, value: 4 },
+    { id: 11, theme: "babyshower", name: "Mini Kit Dulzura", description: "Chupetín para los más pequeños, jabón artesanal suave y delicado para la piel, llaverito adorable para regalar, paquetitos personalizados, detalles en tela, pequeños muñequitos decorativos, y más sorpresas dulces para celebrar con ternura.", price: 2100, value: 4 },
+    { id: 16, theme: "babyshower", name: "Mini Entretenimiento", description: "Burbujero para juegos y risas, sticker con diseños de bebés, juguete pequeño para los niños, libros para colorear, crayones de colores suaves, y elementos para que los más pequeños disfruten en la fiesta.", price: 2100, value: 4 },
+    { id: 20, theme: "babyshower", name: "Kit Hermanito", description: "Dulce especial para niños, calco divertido para decorar, pulsera de colores alegres, juguetes pequeños, pegatinas temáticas, y detalles pensados para que el hermanito también tenga su lugar en la fiesta.", price: 2100, value: 4 },
+    { id: 23, theme: "despedida", name: "Kit Anti-Resaca", description: "Ibuprofeno para aliviar molestias, chicle para refrescar el aliento, toallita húmeda para limpieza rápida, agua mineral, vitaminas y pequeños remedios para sobrevivir la fiesta sin problemas.", price: 2100, value: 4 },
+    { id: 31, theme: "casamiento", name: "Kit Emergencia de Fiesta", description: "Curita para pequeñas heridas, ibuprofeno para aliviar dolores, mentita fresca para el aliento, pañuelos de papel, mini kit de primeros auxilios, y otros detalles para que nada arruine la celebración.", price: 2100, value: 4 },
+    { id: 38, theme: "casamiento", name: "Kit Dulce", description: "Gomitas saborizadas para endulzar la fiesta, burbujero para momentos divertidos, palito de caramelo artesanal, chocolates mini, y dulces variados para compartir y sorprender a los invitados.", price: 2100, value: 4 },
+    { id: 42, theme: "Levanta-Animo", name: "Kit Creativo", description: "Stickers con mensajes positivos, colores vibrantes para pintar, libreta para anotar ideas y pensamientos, lápices de colores y mini manualidades para estimular la creatividad y expresión personal.", price: 2100, value: 4 },
+    { id: 43, theme: "Levanta-Animo", name: "Kit Relajación Express", description: "Té relajante, caramelos de miel natural, saquito aromático con fragancia calmante, tarjeta con mensaje de paz interior, para momentos de descanso y tranquilidad en el día a día.", price: 2100, value: 4 },
+    { id: 47, theme: "Levanta-Animo", name: "Kit Fe y Ánimo", description: "Frase bíblica para fortalecer el espíritu, sobre decorativo, pulsera con mensaje de fe, y otros accesorios para recordar que nunca estamos solos en el camino.", price: 2100, value: 4 },
+    { id: 52, theme: "Levanta-Animo", name: "Kit Esperanza", description: "Semilla para plantar con esperanza de crecimiento, tarjeta con mensaje alentador, tierra especial en pequeño envase, y detalles para cultivar fe y paciencia.", price: 2100, value: 4 },
+    { id: 53, theme: "Levanta-Animo", name: "Kit Paz", description: "Saquito aromático con fragancia relajante, té para calmar el alma, mini cruz decorativa, y otros elementos que invitan a la tranquilidad y armonía interior.", price: 2100, value: 4 },
+    { id: 5, theme: "adolescentes", name: "Kit Chismes", description: "Libretita para anotar secretos y chismes, birome linda con tinta de colores, sticker secreto para pegar en tus cosas, notas adhesivas con diseños exclusivos, lápices de colores, mini diario personal, accesorios para personalizar tu agenda, marcadores divertidos, y pegatinas especiales para guardar y compartir secretos con estilo.", price: 2250, value: 5 },
+    { id: 12, theme: "babyshower", name: "Recuerdo del Bebé", description: "Vela pequeña aromática para ambientar el momento, saquito aromático con esencias naturales, tarjetita personalizada, bolsitas decorativas, mini objetos conmemorativos, etiquetas bonitas, y recuerdos delicados para los invitados.", price: 2250, value: 5 },
+    { id: 18, theme: "babyshower", name: "Kit Colores", description: "Crayones de colores pastel, hojas para pintar y dibujar, mochi suave para manipular, pegatinas de animales y objetos, libros pequeños, y otros elementos creativos para estimular la diversión y la imaginación.", price: 2250, value: 5 },
+    { id: 26, theme: "despedida", name: "Kit Rompe el Hielo", description: "Retos picantes para animar la reunión, carta con preguntas divertidas, sticker para el momento, juegos y dinámicas para que nadie se quede sin reír ni participar.", price: 2250, value: 5 },
+    { id: 37, theme: "casamiento", name: "Kit De Color", description: "Crayones de colores variados, librito para dibujar y escribir mensajes, stickers divertidos, hojas para colorear personalizadas, y pequeños juegos creativos para niños y adultos en la boda.", price: 2250, value: 5 },
+    { id: 55, theme: "Levanta-Animo", name: "Kit Anti-Estrés", description: "Bola antiestrés para aliviar tensiones, té relajante, frase motivadora en tarjeta, y otros accesorios para encontrar calma en momentos difíciles.", price: 2250, value: 5 },
+    { id: 13, theme: "babyshower", name: "Relax Mamá Invitada", description: "Té relajante de hierbas, bálsamo labial nutritivo, pañuelito perfumado para llevar, bolsitas de algodón, mini cremas hidratantes, sales de baño, y productos pensados para el bienestar y el mimo de las invitadas.", price: 2400, value: 6 },
+    { id: 17, theme: "babyshower", name: "Kit Animalitos", description: "Mini muñeco de peluche o goma, stickers con dibujos de animalitos, dulce para endulzar la fiesta, tarjetas decorativas, pequeños accesorios temáticos, y otros objetos tiernos y divertidos para los invitados.", price: 2400, value: 6 },
+    { id: 32, theme: "casamiento", name: "Kit Boda Vintage", description: "Mini jabón artesanal con aroma delicado, tag rústico personalizado, ramita seca decorativa, detalles en tonos naturales, bolsas de papel craft, y accesorios con estilo vintage para sorprender a tus invitados.", price: 2400, value: 6 },
+    { id: 34, theme: "casamiento", name: "Kit Para Llorones", description: "Pañuelo suave para esas lágrimas de emoción, mini perfume para retocar, tarjeta con mensajes emotivos, crema hidratante para manos, y otros pequeños detalles para acompañar momentos especiales.", price: 2400, value: 6 },
+    { id: 40, theme: "casamiento", name: "Kit De Juego", description: "Mini dado para juegos rápidos, cartas en tamaño mini, sticker temático, juegos para grupos pequeños, y accesorios para romper el hielo y divertir a todos los invitados de todas las edades.", price: 2400, value: 6 },
+    { id: 1, theme: "adolescentes", name: "Kit Anti-Aburrimiento", description: "Slime pegajoso y colorido para horas de diversión, stickers divertidos para decorar tus cosas, mochi suave y adorable para apretar, burbujero para hacer pompas gigantes, slime en varios colores y texturas, pegatinas con diseños únicos y originales, mini figuras sorpresa, burbujas con fragancia dulce, juguetes antiestrés variados, y juegos pequeños para entretenerte en cualquier momento.", price: 2550, value: 7 },
+    { id: 6, theme: "adolescentes", name: "Kit K-Pop", description: "Sticker de idols para decorar tu cuaderno o celular, pulsera con frases inspiradoras, chapa con imágenes de tus grupos favoritos, posters miniatura, llaveros temáticos, bandas de goma para el cabello, accesorios para personalizar ropa, y más merchandising para los fanáticos del K-Pop que quieren lucir su pasión a diario.", price: 2550, value: 7 },
+    { id: 15, theme: "babyshower", name: "Kit Aromático", description: "Jabón artesanal perfumado, esencia para ambientar espacios, flor seca decorativa, bolsitas aromáticas, velas pequeñas, aceites esenciales, y otros elementos para crear un ambiente dulce y relajante en la celebración.", price: 2550, value: 7 },
+    { id: 19, theme: "babyshower", name: "Sorpresa Baby", description: "Slime suave y seguro para niños, burbuja para hacer pompas, sellito para estampar, pegatinas divertidas, accesorios para manualidades, y elementos sorpresa que encantan a grandes y chicos.", price: 2550, value: 7 },
+    { id: 21, theme: "despedida", name: "Kit Chismosas", description: "Brillo labial para labios irresistibles, espejo compacto para retoques rápidos, sticker picante para darle un toque divertido y atrevido, mini perfumes, accesorios coquetos y más detalles para las amigas chismosas.", price: 2550, value: 7 },
+    { id: 25, theme: "despedida", name: "Kit Bride Team", description: "Scrunchie estilizado para el cabello, sticker personalizado para el grupo, labial de larga duración, accesorios temáticos, pulseras y objetos para el equipo de la novia para brillar en la despedida.", price: 2550, value: 7 },
+    { id: 29, theme: "despedida", name: "Kit Sobrevivencia", description: "Preservativo para la seguridad, pañuelito para emergencias, chiste para relajar el ambiente, botellita de agua, snacks energéticos y objetos para sobrevivir la noche con buen humor.", price: 2550, value: 7 },
+    { id: 33, theme: "casamiento", name: "Kit Amor Eterno", description: "Vela con forma de corazón para ambientar, confite dulce para compartir, frase romántica impresa en tarjeta, pétalos secos, pequeñas joyitas decorativas y detalles que reflejan el amor y compromiso eterno.", price: 2550, value: 7 },
+    { id: 35, theme: "casamiento", name: "Kit Brindis Mini", description: "Copa plástica para brindar en el momento, caramelos dulces para alegrar, tarjeta personalizada, mini botellas de burbujeante, servilletas decorativas y accesorios para un brindis inolvidable.", price: 2550, value: 7 },
+    { id: 39, theme: "casamiento", name: "Kit Fiesta Kids", description: "Vincha divertida para los más pequeños, calco temático de boda, slime no tóxico y colorido, mini juguetes, y accesorios para mantener entretenidos y felices a los niños durante el evento.", price: 2550, value: 7 },
+    { id: 10, theme: "adolescentes", name: "Kit Gamer Girl", description: "Calco gamer para personalizar tu laptop o consola, joystick mini para coleccionar, golosinas para la maratón de juegos, posters de videojuegos, pulseras con motivos gamer, stickers temáticos, auriculares decorados, y más productos que combinan diversión y pasión por los videojuegos.", price: 2850, value: 8 },
+    { id: 22, theme: "despedida", name: "Kit Sexy", description: "Tatuaje temporal con diseños sensuales, chupetín hot para endulzar la noche, antifaz para juegos y misterio, mini cremas, accesorios íntimos y más sorpresas para encender la fiesta.", price: 2850, value: 8 },
+    { id: 28, theme: "despedida", name: "Kit Macho Man", description: "Mini shot para brindar, calco con diseños masculinos y divertidos, desodorante mini para estar fresco, accesorios de hombre, gafas de sol y detalles para el macho de la fiesta.", price: 2850, value: 8 },
+    { id: 36, theme: "casamiento", name: "Kit Bienvenidos", description: "Mapa detallado de la boda para orientar a los invitados, mini botella de agua para refrescar, snack saludable, mini abanico para el calor, y accesorios de bienvenida para hacer sentir a todos especiales.", price: 2850, value: 8 },
+    { id: 2, theme: "adolescentes", name: "Kit Selfie", description: "Lente de clip para mejorar tus selfies, espejo mini portátil para retoques rápidos, anillo LED con intensidad ajustable para iluminar tu rostro, soporte para teléfono, filtros decorativos para fotos, mini trípode flexible, accesorios para personalizar tu celular, pegatinas para teléfonos, y mini luces para hacer que tus fotos luzcan profesionales y divertidas.", price: 3300, value: 9 },
+    { id: 27, theme: "despedida", name: "Kit Selfie Party", description: "Marco mini para selfies perfectas, anillo LED para iluminación ideal, frases divertidas para fotos, filtros y accesorios para que la fiesta quede en la memoria con las mejores imágenes.", price: 3300, value: 9 },
+    { id: 4, theme: "adolescentes", name: "Kit Fiestero", description: "Pulsera LED con luces de colores cambiantes, vinchas locas y divertidas para fiestas, burbujas para ambientar el momento, confeti biodegradable, accesorios de disfraces, collares luminosos, mini linterna de colores, serpentinas, gafas fluorescentes, y otros artículos para que la fiesta sea inolvidable y súper divertida.", price: 3000, value: 10 },
+    { id: 24, theme: "despedida", name: "Kit Loca Noche", description: "Calco divertido y atrevido para pegar donde quieras, vincha llamativa para destacar, mini shot para brindar, accesorios locos para la noche, confeti y artículos para animar la fiesta sin parar.", price: 3000, value: 10 },
+    { id: 30, theme: "despedida", name: "Kit Fiesta Salvaje", description: "Gafas locas de colores, pulsera LED para brillar en la oscuridad, pastilla efervescente para refrescar, confeti y accesorios de fiesta para que la noche sea inolvidable y llena de energía.", price: 3000, value: 10 },
+    { id: 3, theme: "adolescentes", name: "Kit Glitter", description: "Brillos brillantes para uñas y cuerpo, esmalte de uñas en colores variados y tendencia, mini perfume con aroma fresco y juvenil, tatoos temporales con diseños creativos y originales, purpurina para manualidades, stickers brillantes para decorar, accesorios con brillo para el cabello, sombras de ojos con glitter, y otros elementos para un look deslumbrante y lleno de estilo.", price: 3600, value: 11 },
+    { id: 7, theme: "adolescentes", name: "Kit TikTok", description: "Accesorios para bailes virales, anillo de luz para grabar tus videos, antifaz para retos divertidos, soporte para teléfono, mini trípode, filtros y lentes temáticos, pegatinas para decorar tu setup, y elementos que te ayudarán a crear contenido espectacular y trendy en TikTok.", price: 3600, value: 11 },
 ];
-

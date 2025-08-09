@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "./context/CartContext";
+import Navbar from "./components/Navbar";
+import { Footer } from "./components/Footer";
+import { Toaster } from "react-hot-toast";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,11 +35,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         }}
       >
         <CartProvider>
-          <main className="bg-opacity-50 min-h-screen max-w-7xl mx-auto px-2 sm:px-6">
-            <div className="backdrop-blur-lg bg-white/30 rounded-2xl shadow-xl p-4 sm:p-6 border border-white/40">
-              {children}
-            </div>
-          </main>
+          <Navbar />
+          {children}
+          <Toaster position="bottom-right" toastOptions={{ duration: 2000 }} />
+          <Footer />
         </CartProvider>
       </body>
     </html>

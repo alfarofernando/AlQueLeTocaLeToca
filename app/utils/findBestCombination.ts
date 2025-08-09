@@ -1,8 +1,8 @@
 import { ProductType } from "../types/ProductType";
 
 const MAX_CONSECUTIVE = 2;    // No más de 2 veces seguidas
-const BLOCK_INTERVAL = 5;     // Cada 5 vueltas bloqueamos producto más repetido
-const BLOCK_DURATION = 10;    // Bloqueamos por 10 vueltas
+const BLOCK_INTERVAL = 3;     // Cada 5 vueltas bloqueamos producto más repetido
+const BLOCK_DURATION = 5;    // Bloqueamos por 10 vueltas
 
 export function findBestCombination(
     products: ProductType[],
