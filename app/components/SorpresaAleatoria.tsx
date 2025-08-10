@@ -81,18 +81,6 @@ export default function SorpresaAleatoria({ budget = 10000 }: { budget?: number 
         setOpenInfoId((prev) => (prev === id ? null : id));
     };
 
-    // Abrir info del último item automáticamente cuando bestCombo cambia, usando requestAnimationFrame
-    useEffect(() => {
-        if (bestCombo.length > 0) {
-            const rafId = requestAnimationFrame(() => {
-                setOpenInfoId(bestCombo[0].product.id);
-            });
-            return () => cancelAnimationFrame(rafId);
-        } else {
-            setOpenInfoId(null);
-        }
-    }, [bestCombo]);
-
     // Recalcular altura cuando cambia el contenido visible o el producto con info abierta
     useEffect(() => {
         if (showContent && contentRef.current) {
