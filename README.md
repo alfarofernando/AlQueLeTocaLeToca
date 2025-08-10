@@ -4,6 +4,31 @@ Bienvenido/a a **La Suerte Loca**, una tienda MVP de kits temáticos y sorpresas
 
 ---
 
+# Índice
+
+- [🎁 La Suerte Loca](#-la-suerte-loca)
+- [🚀 Demo](#-demo)
+- [📋 Objetivo de la prueba técnica](#-objetivo-de-la-prueba-técnica)
+- [📦 Características principales](#-características-principales)
+- [🗂️ Estructura del proyecto](#️-estructura-del-proyecto)
+- [🛠️ Instalación y ejecución](#️-instalación-y-ejecución)
+- [🧩 Descripción de la solución](#-descripción-de-la-solución)
+  - [Backend (API)](#backend-api)
+  - [Frontend](#frontend)
+  - [Lógica de combinaciones](#lógica-de-combinaciones)
+    - [Diagrama de flujo (textual) del método `findBestCombination`](#diagrama-de-flujo-textual-del-método-findbestcombination)
+  - [Tipado y buenas prácticas](#tipado-y-buenas-prácticas)
+- [🧪 Testing](#-testing)
+- [💻 Tecnologías utilizadas](#-tecnologías-utilizadas)
+- [📄 Licencia](#-licencia)
+- [📑 Entrega y consignas cumplidas](#-entrega-y-consignas-cumplidas)
+- [👤 Autor](#-autor)
+- [🤝 Contribuciones](#-contribuciones)
+- [📬 Contacto](#-contacto)
+
+---
+
+
 ## 🚀 Demo
 
 [https://lasuerteloca.netlify.app/](https://lasuerteloca.netlify.app/)
