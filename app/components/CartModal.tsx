@@ -7,13 +7,11 @@ import { ProductType } from "../types/ProductType";
 import { useCart } from "../context/CartContext";
 import AfterSendModal from "./AfterSendModal";
 
-
 export default function CartModal() {
     const {
         cart: items,
         updateQuantity,
         clearCart,
-        /*   loading, cuando se implementen spinners va a venir bien aparte para bloqueo de botones etc. */
     } = useCart();
 
     const [open, setOpen] = useState(false);
@@ -22,14 +20,14 @@ export default function CartModal() {
 
     // Crear un Map para cantidad de cada producto
     const quantityMap = new Map<number, number>();
-    items.forEach(item => {
+    items.forEach((item) => {
         quantityMap.set(item.id, item.quantity ?? 0);
     });
 
     // Productos únicos en orden
     const uniqueProducts: ProductType[] = [];
     const seen = new Set<number>();
-    items.forEach(item => {
+    items.forEach((item) => {
         if (!seen.has(item.id)) {
             seen.add(item.id);
             uniqueProducts.push(item);
@@ -37,10 +35,24 @@ export default function CartModal() {
     });
 
     // Agrupar con cantidades
-    const groupedItems = uniqueProducts.map(product => ({
+    const groupedItems = uniqueProducts.map((product) => ({
         product,
         quantity: quantityMap.get(product.id) ?? 0,
     }));
+
+    // Agrupar productos por temática para UI
+    const groupedByThemeUI = groupedItems.reduce((acc, item) => {
+        if (!acc[item.product.theme]) acc[item.product.theme] = [];
+        acc[item.product.theme].push(item);
+        return acc;
+    }, {} as Record<string, typeof groupedItems>);
+
+    // Agrupar productos por temática para mensaje WhatsApp
+    const groupedByThemeMsg = groupedItems.reduce((acc, item) => {
+        if (!acc[item.product.theme]) acc[item.product.theme] = [];
+        acc[item.product.theme].push(item);
+        return acc;
+    }, {} as Record<string, typeof groupedItems>);
 
     const totalQuantity = groupedItems.reduce((acc, i) => acc + i.quantity, 0);
     const total = groupedItems.reduce(
@@ -52,15 +64,21 @@ export default function CartModal() {
     const discountAmount = total * discountRate;
     const finalTotal = total - discountAmount;
 
+    // Construir mensaje con separadores por temática
     const message = encodeURIComponent(
-        groupedItems
-            .map(
-                (item) =>
-                    `${item.quantity}x ${item.product.name}: $${(
-                        item.product.price * item.quantity
-                    ).toFixed(2)}`
-            )
-            .join("\n") +
+        Object.entries(groupedByThemeMsg)
+            .map(([theme, items]) => {
+                const productsText = items
+                    .map(
+                        (item) =>
+                            `${item.quantity}x ${item.product.name}: $${(
+                                item.product.price * item.quantity
+                            ).toFixed(2)}`
+                    )
+                    .join("\n");
+                return `${theme.toUpperCase()}:\n${productsText}`;
+            })
+            .join("\n\n") +
         `\n\nTotal: $${total.toFixed(2)}` +
         (discountRate > 0
             ? `\nDescuento por venta mayorista: -$${discountAmount.toFixed(2)}` +
@@ -85,7 +103,7 @@ export default function CartModal() {
         setOpen(false);
     };
 
-    // Enviar pedido y vaciar carrito luego
+    // Enviar pedido y mostrar modal de éxito
     const handleSendOrder = () => {
         window.open(`https://wa.me/5491164094722?text=${message}`, "_blank");
         setAfterSendOpen(true);
@@ -162,48 +180,57 @@ export default function CartModal() {
 
                             {items.length > 0 ? (
                                 <>
-                                    <ul className="mb-4 space-y-2 max-h-60 overflow-y-auto pr-2">
-                                        {groupedItems.map(({ product, quantity }) => (
-                                            <li
-                                                key={product.id}
-                                                className="flex justify-between items-center border-b pb-2"
-                                            >
-                                                <span className="flex-1">
-                                                    {quantity > 1 ? `${quantity}x ` : ""}
-                                                    {product.name}
-                                                </span>
-                                                <span className="mr-4">${(product.price * quantity).toFixed(2)}</span>
-                                                <div className="flex items-center gap-1">
-                                                    <button
-                                                        onClick={() => handleQuantityChange(product, -1)}
-                                                        aria-label={`Disminuir cantidad de ${product.name}`}
-                                                        className="p-1 bg-pink-600 text-white rounded hover:bg-pink-700 transition"
-                                                    >
-                                                        <FiMinus size={16} />
-                                                    </button>
-                                                    <button
-                                                        onClick={() => handleQuantityChange(product, +1)}
-                                                        aria-label={`Aumentar cantidad de ${product.name}`}
-                                                        className="p-1 bg-pink-600 text-white rounded hover:bg-pink-700 transition"
-                                                    >
-                                                        <FiPlus size={16} />
-                                                    </button>
-                                                </div>
-                                            </li>
+                                    <div className="max-h-[60vh] overflow-y-auto pr-2 mb-4">
+                                        {Object.entries(groupedByThemeUI).map(([theme, items]) => (
+                                            <div key={theme} className="mb-6">
+                                                <h4 className="text-lg font-semibold mb-2 border-b border-pink-600">
+                                                    {theme.toUpperCase()}
+                                                </h4>
+                                                <ul className="space-y-2">
+                                                    {items.map(({ product, quantity }) => (
+                                                        <li
+                                                            key={product.id}
+                                                            className="flex justify-between items-center border-b pb-2"
+                                                        >
+                                                            <span className="flex-1">
+                                                                {quantity > 1 ? `${quantity}x ` : ""}
+                                                                {product.name}
+                                                            </span>
+                                                            <span className="mr-4">${(product.price * quantity).toFixed(2)}</span>
+                                                            <div className="flex items-center gap-1">
+                                                                <button
+                                                                    onClick={() => handleQuantityChange(product, -1)}
+                                                                    aria-label={`Disminuir cantidad de ${product.name}`}
+                                                                    className="p-1 bg-pink-600 text-white rounded hover:bg-pink-700 transition"
+                                                                >
+                                                                    <FiMinus size={16} />
+                                                                </button>
+                                                                <button
+                                                                    onClick={() => handleQuantityChange(product, +1)}
+                                                                    aria-label={`Aumentar cantidad de ${product.name}`}
+                                                                    className="p-1 bg-pink-600 text-white rounded hover:bg-pink-700 transition"
+                                                                >
+                                                                    <FiPlus size={16} />
+                                                                </button>
+                                                            </div>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
                                         ))}
-                                    </ul>
+                                    </div>
 
                                     {discountRate > 0 ? (
-                                        <div className="mb-4 border-t border-gray-300 pt-2 text-red-600 font-semibold">
+                                        <div className="mb-1 border-t border-gray-300 pt-1 text-red-600 font-semibold">
                                             <p>Descuento por venta mayorista: -${discountAmount.toFixed(2)}</p>
                                         </div>
                                     ) : (
-                                        <div className="mb-4 border-t border-gray-300 pt-2 text-gray-400 font-semibold italic">
+                                        <div className="mb-1 border-t border-gray-300 pt-1 text-gray-400 font-semibold italic">
                                             <p>Precio mayorista +20 productos</p>
                                         </div>
                                     )}
 
-                                    <p className="text-lg font-semibold mb-6">
+                                    <p className="text-lg font-semibold mb-2">
                                         Total {discountRate > 0 ? "(con descuento)" : ""}: ${finalTotal.toFixed(2)}
                                     </p>
 
@@ -246,7 +273,6 @@ export default function CartModal() {
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.8, opacity: 0 }}
                         >
-
                             <div className="bg-white rounded-lg p-6 max-w-sm w-full m shadow-lg text-center">
                                 <p className="mb-4 text-lg font-medium">
                                     ¿Estás seguro que quieres vaciar el carrito?
@@ -264,15 +290,13 @@ export default function CartModal() {
                                     >
                                         Seguir Comprando
                                     </button>
-
                                 </div>
                             </div>
                         </motion.div>
-
-
                     </>
                 )}
             </AnimatePresence>
+
             <AfterSendModal
                 open={afterSendOpen}
                 onClose={() => setAfterSendOpen(false)}

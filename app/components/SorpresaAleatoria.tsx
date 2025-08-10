@@ -21,6 +21,7 @@ export default function SorpresaAleatoria({ budget = 10000 }: { budget?: number 
     const contentRef = useRef<HTMLDivElement>(null);
     const [contentHeight, setContentHeight] = useState<number>(0);
     const { addToCart } = useCart();
+    const [loadingAddAll, setLoadingAddAll] = useState(false);
 
     // Estado para controlar qué producto tiene la info abierta (por id), o null si ninguno
     const [openInfoId, setOpenInfoId] = useState<number | null>(null);
@@ -206,15 +207,25 @@ export default function SorpresaAleatoria({ budget = 10000 }: { budget?: number 
                                                 Total: ${bestCombo.reduce((sum, p) => sum + p.product.price * p.quantity, 0).toLocaleString()}
                                             </p>
                                             <button
-                                                onClick={() => {
-                                                    bestCombo.forEach(({ product, quantity }) => {
-                                                        addToCart(product.id, quantity);
-                                                    });
+                                                onClick={async () => {
+                                                    setLoadingAddAll(true);
+                                                    for (const { product, quantity } of bestCombo) {
+                                                        await addToCart(product.id, quantity);
+                                                    }
+                                                    setLoadingAddAll(false);
                                                 }}
-                                                className="bg-pink-600 hover:bg-pink-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition w-full sm:w-auto"
+                                                disabled={loadingAddAll}
+                                                className="bg-pink-600 hover:bg-pink-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
                                                 aria-label="Agregar toda la lista al carrito"
                                             >
-                                                Agregar todo
+                                                {loadingAddAll ? (
+                                                    <div className="flex items-center gap-2 justify-center">
+                                                        <span>Agregando...</span>
+                                                    </div>
+
+                                                ) : (
+                                                    "Agregar todo"
+                                                )}
                                             </button>
                                         </div>
 

@@ -23,7 +23,7 @@ export default function Navbar() {
     }, [menuOpen]);
 
     return (
-        <nav className="sticky inset-0 w-full z-50 bg-[#328AC2] shadow-md">
+        <nav className="sticky inset-0 w-full z-50 bg-[#328AC2] shadow-md ">
             <div className="flex items-center justify-between mx-6">
                 {/* Logo */}
                 <Link href="/">
@@ -68,7 +68,7 @@ export default function Navbar() {
                 {/* Separador vertical */}
                 <div className="w-px h-6 bg-white/50 mx-4" />
                 {/* Carrito + menú móvil */}
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 ">
                     <CartModal />
                     <button
                         className="sm:hidden p-2 rounded-md hover:bg-[#7B9CAE]/30"

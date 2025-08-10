@@ -1,5 +1,6 @@
 import { findBestCombination } from "./findBestCombination";
 import { ProductType } from "../types/ProductType";
+import chalk from "chalk";
 
 describe("bestCombKnapsackWithRules - Test de estrés y validaciones", () => {
     // Generar 100 productos con precio creciente y temas variados
@@ -14,12 +15,19 @@ describe("bestCombKnapsackWithRules - Test de estrés y validaciones", () => {
     }
 
     // Varias configuraciones de presupuesto para estresar
-    const budgets = [50, 100, 500, 1000, 5000];
+    const budgets = [50, 100, 500, 1000, 5000, 10000, 20000, 50000, 100000, 500000];
 
-    it("no rompe en múltiples ejecuciones y presupuestos, y cumple reglas", () => {
-        console.log("Comenzando test de validaciones múltiples...");
+    // Número total de ejecuciones
+    const RUNS_PER_BUDGET = 60; // triplicado desde 20
+    const totalRuns = budgets.length * RUNS_PER_BUDGET;
+
+    it(chalk.bold.cyan("Test de validaciones múltiples y estrés"), () => {
+        console.log(chalk.green("🚀 Iniciando test de validaciones múltiples y estrés..."));
+        let currentRun = 0;
+
         budgets.forEach((budget) => {
-            for (let run = 0; run < 20; run++) {
+            for (let run = 0; run < RUNS_PER_BUDGET; run++) {
+                currentRun++;
                 const result = findBestCombination(products, budget);
 
                 // Validación 1: No excede presupuesto
@@ -38,32 +46,36 @@ describe("bestCombKnapsackWithRules - Test de estrés y validaciones", () => {
                     ).toBe(true);
                 }
 
-                // Validación 5: Resultado no vacío si presupuesto >= mínimo precio
+                // Validación 4: Resultado no vacío si presupuesto >= mínimo precio
                 if (budget >= products[0].price) {
                     expect(result.length).toBeGreaterThan(0);
                 } else {
                     expect(result.length).toBe(0);
                 }
 
-                // Barra de progreso simple
-                const totalRuns = budgets.length * 20;
-                const currentRun = budgets.indexOf(budget) * 20 + run + 1;
-                const progress = Math.floor((currentRun / totalRuns) * 20);
-                const bar = "▇".repeat(progress) + "-".repeat(20 - progress);
-                process.stdout.write(`\r[${bar}] ${currentRun}/${totalRuns} checks passed ✅`);
+                // Barra de progreso con color y emojis
+                const progressBarLength = 30;
+                const progress = Math.floor((currentRun / totalRuns) * progressBarLength);
+                const bar = chalk.bgGreen(" ".repeat(progress)) + chalk.bgBlack(" ".repeat(progressBarLength - progress));
+                const percent = ((currentRun / totalRuns) * 100).toFixed(1);
+
+                process.stdout.write(
+                    `\r${chalk.yellow("Progreso:")} [${bar}] ${percent}% ${chalk.blue(`${currentRun}/${totalRuns}`)} pruebas completadas ✅`
+                );
             }
         });
-        console.log("\nTest de validaciones múltiples finalizado ✅");
+        console.log(chalk.green("\n🎉 Test de validaciones múltiples y estrés completado con éxito ✅"));
     });
 
-    it("genera diversidad: no todas las ejecuciones son idénticas", () => {
-        console.log("Comenzando test de diversidad de ejecuciones...");
+    it(chalk.bold.magenta("Test de diversidad: asegurar variedad en salidas"), () => {
+        console.log(chalk.magenta("🔄 Iniciando test de diversidad..."));
         const budget = 1000;
         const executions: ProductType[][] = [];
 
-        for (let i = 0; i < 30; i++) {
+        const diversityRuns = 90; // triplicado desde 30
+        for (let i = 0; i < diversityRuns; i++) {
             executions.push(findBestCombination(products, budget));
-            process.stdout.write(`\rEjecutando iteración ${i + 1}/30...`);
+            process.stdout.write(`\rEjecutando iteración ${i + 1}/${diversityRuns}...`);
         }
 
         let identicalCount = 0;
@@ -75,20 +87,24 @@ describe("bestCombKnapsackWithRules - Test de estrés y validaciones", () => {
             }
         }
 
-        console.log(`\nEjecuciones idénticas encontradas: ${identicalCount}`);
-        expect(identicalCount).toBeLessThan(executions.length * executions.length / 4);
-        console.log("Test de diversidad finalizado ✅");
+        console.log(`\nEjecuciones idénticas encontradas: ${chalk.redBright(identicalCount)}`);
+        expect(identicalCount).toBeLessThan((executions.length * executions.length) / 4);
+        console.log(chalk.magenta("🎉 Test de diversidad finalizado ✅"));
     });
 
-    it("maneja casos borde: sin productos o presupuesto 0", () => {
-        console.log("Comenzando test de casos borde...");
+    it(chalk.bold.blue("Test de casos borde: sin productos y presupuesto 0"), () => {
+        console.log(chalk.blue("🔹 Iniciando test de casos borde..."));
+
         expect(findBestCombination([], 1000)).toEqual([]);
-        console.log("  ✅ Sin productos, presupuesto 1000");
+        console.log(chalk.green("  ✅ Sin productos, presupuesto 1000"));
+
         expect(findBestCombination(products, 0)).toEqual([]);
-        console.log("  ✅ Con productos, presupuesto 0");
+        console.log(chalk.green("  ✅ Con productos, presupuesto 0"));
+
         expect(findBestCombination([], 0)).toEqual([]);
-        console.log("  ✅ Sin productos, presupuesto 0");
-        console.log("Test de casos borde finalizado ✅");
+        console.log(chalk.green("  ✅ Sin productos, presupuesto 0"));
+
+        console.log(chalk.blue("🎉 Test de casos borde finalizado ✅"));
     });
 });
 
