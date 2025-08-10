@@ -1,3 +1,5 @@
+'use client';
+
 import { FiPlus } from "react-icons/fi";
 import { ProductType } from "../../types/ProductType";
 import { useCart } from "../../context/CartContext"; // Ajusta la ruta

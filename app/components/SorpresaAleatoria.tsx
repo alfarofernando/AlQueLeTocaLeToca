@@ -11,7 +11,7 @@ import { FiRefreshCw, FiShoppingCart } from "react-icons/fi";
 import ProductItem from "./ProductItem";
 
 export default function SorpresaAleatoria({ budget = 10000 }: { budget?: number }) {
-    const { products, loading, error } = useProducts();
+    const { products, error } = useProducts();
     const [inputBudget, setInputBudget] = useState<number>(budget);
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [showContent, setShowContent] = useState<boolean>(false);

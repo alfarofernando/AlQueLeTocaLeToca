@@ -2,7 +2,6 @@
 
 import { useSearchParams } from "next/navigation";
 import { useProducts } from "../hooks/useProducts";
-import { ProductType } from "../types/ProductType";
 import ProductCard from "./components/ProductCard";
 import ProductCardSkeleton from "./components/ProductCardSkeleton";
 import { motion, AnimatePresence, useMotionValue, useTransform, useAnimationFrame } from "framer-motion";
@@ -13,10 +12,6 @@ export default function ProductsPage() {
     const searchParams = useSearchParams();
     const theme = searchParams.get("theme") || undefined;
     const { products, loading, error } = useProducts(theme);
-
-    const handleAdd = (product: ProductType) => {
-        console.log("Producto agregado:", product);
-    };
 
     // Buscar la descripción según tema
     const temaInfo = temasDescripcion.find((t) => t.theme === theme);
@@ -112,7 +107,7 @@ export default function ProductsPage() {
                                     hidden: { opacity: 0, y: 20, scale: 0.95 },
                                     visible: { opacity: 1, y: 0, scale: 1 }
                                 }}
-                                transition={{ duration: 0.5, ease: "easeOut" }}
+                                transition={{ duration: 0.5, ease: "easeInOut" }}
                                 exit={{ opacity: 0 }}
                             >
                                 <ProductCard product={product} />

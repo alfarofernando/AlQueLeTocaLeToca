@@ -5,6 +5,7 @@ import { motion, AnimatePresence, easeInOut } from "framer-motion";
 import { FiMenu, FiX } from "react-icons/fi";
 import Link from "next/link";
 import CartModal from "./CartModal";
+import Image from "next/image";
 
 const themes = [
     { key: "adolescentes", label: "Adolescentes" },
@@ -26,12 +27,13 @@ export default function Navbar() {
             <div className="flex items-center justify-between mx-6">
                 {/* Logo */}
                 <Link href="/">
-                    <img
+                    <Image
                         src="/LaSuerteEsLoca.png"
                         alt="La Suerte es Loca"
                         width={60}
                         height={60}
                         className="hover:opacity-80 transition-opacity"
+                        priority={true}
                     />
                 </Link>
 
