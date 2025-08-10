@@ -40,7 +40,7 @@ Bienvenido/a a **La Suerte Loca**, una tienda MVP de kits temáticos y sorpresas
 El objetivo principal es construir una aplicación fullstack que permita:
 
 - Consultar un catálogo de productos temáticos.
-- Ingresar un presupuesto y obtener automáticamente la mejor combinación de productos posible ("Automatic Zoom").
+- Ingresar un presupuesto y obtener automáticamente la mejor combinación de productos posible ("findBestCombination").
 - Visualizar y gestionar un carrito de compras.
 - Cumplir con buenas prácticas de desarrollo, documentación y despliegue.
 
@@ -49,7 +49,7 @@ El objetivo principal es construir una aplicación fullstack que permita:
 ## 📦 Características principales
 
 - **Catálogo de productos**: Explora kits temáticos para distintas ocasiones, con descripciones, precios y detalles visuales.
-- **Selección automática ("Automatic Zoom")**: Ingresa un presupuesto y la app calcula la mejor combinación de productos posible, maximizando el valor y ajustándose al monto ingresado.
+- **Selección automática ("findBestCombination")**: Ingresa un presupuesto y la app calcula la mejor combinación de productos posible, maximizando el valor y ajustándose al monto ingresado.
 - **Carrito de compras**: Agrega, elimina y visualiza productos seleccionados, con actualización dinámica del total.
 - **API REST**: Endpoints para obtener productos y calcular combinaciones óptimas según presupuesto.
 - **UI moderna y responsiva**: Construida con Next.js 15, React 19 y Tailwind CSS 4, adaptada a dispositivos móviles y escritorio.
@@ -122,7 +122,7 @@ npm run test
 ### Backend (API)
 
 - **`/api/products`**: Devuelve el listado completo de productos, con detalles, precio y valor relativo (`value`), permitiendo a la app mostrar el catálogo y filtrar por temáticas.
-- **`/api/cart`**: Recibe un presupuesto y retorna la mejor combinación posible de productos, maximizando el valor y ajustándose al monto ingresado. Implementa la lógica de "Automatic Zoom" solicitada en la prueba técnica.
+- **`/api/cart`**: Recibe un presupuesto y retorna la mejor combinación posible de productos, maximizando el valor y ajustándose al monto ingresado. Implementa la lógica de "findBestCombination" solicitada en la prueba técnica.
 
 ### Frontend
 
@@ -234,7 +234,7 @@ MIT
 
 - [x] **API REST**: Endpoints para productos y combinaciones óptimas.
 - [x] **Frontend**: Visualización de catálogo, carrito y selección automática.
-- [x] **Lógica "Automatic Zoom"**: Algoritmo probado y validado.
+- [x] **Lógica "findBestCombination"**: Algoritmo probado y validado.
 - [x] **Repositorio público en GitHub**: [https://github.com/alfarofernando/LaSuerteLoca](https://github.com/alfarofernando/LaSuerteLoca)
 - [x] **README.md**: Instrucciones claras y descripción detallada.
 - [x] **URL funcional**: [https://lasuerteloca.netlify.app/](https://lasuerteloca.netlify.app/)
