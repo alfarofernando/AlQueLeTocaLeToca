@@ -1,6 +1,6 @@
-# 🎁 La Suerte Es Loca
+# 🎁 La Suerte Loca
 
-Bienvenido/a a **La Suerte Es Loca**, una tienda MVP de kits temáticos y sorpresas desarrollada como solución para una prueba técnica. Este proyecto integra un catálogo de productos, selección automática de combinaciones óptimas según presupuesto, carrito de compras, y una experiencia de usuario moderna, responsiva y profesional.
+Bienvenido/a a **La Suerte Loca**, una tienda MVP de kits temáticos y sorpresas desarrollada como solución para una prueba técnica. Este proyecto integra un catálogo de productos, selección automática de combinaciones óptimas según presupuesto, carrito de compras, y una experiencia de usuario moderna, responsiva y profesional.
 
 ---
 
@@ -67,8 +67,8 @@ app/
 ### 1. Clona el repositorio
 
 ```bash
-git clone https://github.com/alfarofernando/LaSuerteEsLoca.git
-cd LaSuerteEsLoca
+git clone https://github.com/alfarofernando/LaSuerteLoca.git
+cd LaSuerteLoca
 ```
 
 ### 2. Instala las dependencias
@@ -152,7 +152,7 @@ MIT
 - [x] **API REST**: Endpoints para productos y combinaciones óptimas.
 - [x] **Frontend**: Visualización de catálogo, carrito y selección automática.
 - [x] **Lógica "Automatic Zoom"**: Algoritmo probado y validado.
-- [x] **Repositorio público en GitHub**: [https://github.com/alfarofernando/LaSuerteEsLoca](https://github.com/alfarofernando/LaSuerteEsLoca)
+- [x] **Repositorio público en GitHub**: [https://github.com/alfarofernando/LaSuerteLoca](https://github.com/alfarofernando/LaSuerteLoca)
 - [x] **README.md**: Instrucciones claras y descripción detallada.
 - [x] **URL funcional**: [https://lasuerteloca.netlify.app/](https://lasuerteloca.netlify.app/)
 - [x] **Testing**: Lógica principal testeada con Jest.
