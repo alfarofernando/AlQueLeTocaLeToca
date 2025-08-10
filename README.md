@@ -112,6 +112,64 @@ npm run test
 - El algoritmo (`utils/findBestCombination.ts`) utiliza programación dinámica para encontrar la mejor combinación de productos sin exceder el presupuesto, cumpliendo exactamente con el ejemplo y requisitos del PDF de la prueba técnica.
 - Incluye tests unitarios (`utils/findBestCombination.test.ts`) para asegurar la precisión de los resultados y facilitar futuras mejoras.
 
+#### Diagrama de flujo (textual) del método `findBestCombination`
+
+1. **Inicio**
+
+2. **Verificar si hay productos**
+   - Si `products` está vacío, retorna lista vacía `[]` y termina.
+
+3. **Inicializar variables**
+   - `budgetLeft` = `maxBudget`
+   - `selectedProducts` = []
+   - `recentProducts` = []
+   - `consecutiveCount` = Map vacío
+   - `blockCounter` = Map vacío
+   - `iteration` = 0
+
+4. **Bucle principal (while true):**
+
+   4.1. Incrementar `iteration` en 1
+
+   4.2. **Elegir próximo producto (función `pickNextProduct`):**
+
+       4.2.1. Filtrar productos que cumplen condiciones (`canSelectProduct`):
+
+       - Precio <= `budgetLeft`  
+       - Producto no bloqueado (`blockCounter[id]` <= 0)  
+       - Producto no repetido consecutivamente más de `MAX_CONSECUTIVE` veces
+
+       4.2.2. Si no hay candidatos, salir del bucle (fin).
+
+       4.2.3. Si hay candidatos, elegir uno aleatorio y devolverlo.
+
+   4.3. Si `nextProduct` es null, salir del bucle (fin).
+
+   4.4. Agregar `nextProduct` a `selectedProducts`.
+
+   4.5. Restar el precio de `nextProduct` a `budgetLeft`.
+
+   4.6. **Actualizar conteo de repeticiones consecutivas:**
+
+   - Si último producto seleccionado es igual a `nextProduct`:  
+     - Incrementar contador en `consecutiveCount` para ese producto  
+   - Si no, iniciar contador en 1 para ese producto
+
+   4.7. Agregar `nextProduct.id` a `recentProducts`.  
+   - Mantener solo los últimos `MAX_CONSECUTIVE` ids (eliminar los más antiguos si sobran).
+
+   4.8. **Cada `BLOCK_INTERVAL` iteraciones:**
+
+   - Obtener producto más repetido en `selectedProducts` (`getMostRepeatedProductId`)  
+   - Bloquear ese producto en `blockCounter` por `BLOCK_DURATION` iteraciones
+
+   4.9. Disminuir en 1 los contadores de bloqueo activos (`decrementBlockCounters`).
+
+5. **Fin del bucle**
+
+6. **Retornar `selectedProducts`**
+
+
 ### Tipado y buenas prácticas
 
 - Todo el código está en TypeScript, asegurando robustez y facilidad de refactorización.

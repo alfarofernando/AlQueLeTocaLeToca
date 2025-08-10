@@ -1,45 +1,69 @@
 import { ProductType } from "../types/ProductType";
 
 const MAX_CONSECUTIVE = 2;    // No más de 2 veces seguidas
-const BLOCK_INTERVAL = 3;     // Cada 5 vueltas bloqueamos producto más repetido
-const BLOCK_DURATION = 5;    // Bloqueamos por 10 vueltas
+const BLOCK_INTERVAL = 3;     // Cada 3 iteraciones bloqueamos producto más repetido
+const BLOCK_DURATION = 5;     // Bloqueamos por 5 iteraciones
 
 export function findBestCombination(
     products: ProductType[],
     maxBudget: number
-): ProductType[] { // devuelve lista de productos en orden de selección
-    if (!products.length) return [];
+): ProductType[] {
+    if (products.length === 0) return [];
 
     let budgetLeft = maxBudget;
     const selectedProducts: ProductType[] = [];
 
     const recentProducts: number[] = [];
-    const consecutiveCount: { [id: number]: number } = {};
-    const blockCounter: { [id: number]: number } = {};
+    const consecutiveCount = new Map<number, number>();
+    const blockCounter = new Map<number, number>();
     let iteration = 0;
 
-    function updateBlocks() {
-        for (const id in blockCounter) {
-            if (blockCounter[id] > 0) blockCounter[id]--;
+    function decrementBlockCounters() {
+        for (const [id, count] of blockCounter.entries()) {
+            if (count > 0) {
+                blockCounter.set(id, count - 1);
+            }
         }
     }
 
+    function getMostRepeatedProductId(): number | null {
+        const counts = new Map<number, number>();
+        for (const p of selectedProducts) {
+            counts.set(p.id, (counts.get(p.id) ?? 0) + 1);
+        }
+        if (counts.size === 0) return null;
+
+        // Ordenar para obtener el producto más repetido
+        let maxCount = 0;
+        let mostRepeatedId: number | null = null;
+        for (const [id, count] of counts.entries()) {
+            if (count > maxCount) {
+                maxCount = count;
+                mostRepeatedId = id;
+            }
+        }
+        return mostRepeatedId;
+    }
+
+    function canSelectProduct(p: ProductType): boolean {
+        if (p.price > budgetLeft) return false;
+
+        if ((blockCounter.get(p.id) ?? 0) > 0) return false;
+
+        const lastProductId = recentProducts[recentProducts.length - 1];
+        const lastCount = consecutiveCount.get(p.id) ?? 0;
+        if (lastProductId === p.id && lastCount >= MAX_CONSECUTIVE) return false;
+
+        return true;
+    }
+
     function pickNextProduct(): ProductType | null {
-        const candidates = products.filter((p) => {
-            if (p.price > budgetLeft) return false;
-            if (blockCounter[p.id] && blockCounter[p.id] > 0) return false;
-
-            const lastProductId = recentProducts[recentProducts.length - 1];
-            const lastCount = consecutiveCount[p.id] || 0;
-            if (lastProductId === p.id && lastCount >= MAX_CONSECUTIVE) return false;
-
-            return true;
-        });
-
+        const candidates = products.filter(canSelectProduct);
         if (candidates.length === 0) return null;
 
-        const shuffled = candidates.sort(() => Math.random() - 0.5);
-        return shuffled[0];
+        // Elegir uno aleatorio entre candidatos
+        const randomIndex = Math.floor(Math.random() * candidates.length);
+        return candidates[randomIndex];
     }
 
     while (true) {
@@ -51,28 +75,26 @@ export function findBestCombination(
         selectedProducts.push(nextProduct);
         budgetLeft -= nextProduct.price;
 
+        // Actualizar conteo consecutivo
         const lastProductId = recentProducts[recentProducts.length - 1];
         if (lastProductId === nextProduct.id) {
-            consecutiveCount[nextProduct.id] = (consecutiveCount[nextProduct.id] || 0) + 1;
+            consecutiveCount.set(nextProduct.id, (consecutiveCount.get(nextProduct.id) ?? 0) + 1);
         } else {
-            consecutiveCount[nextProduct.id] = 1;
+            consecutiveCount.set(nextProduct.id, 1);
         }
+
         recentProducts.push(nextProduct.id);
         if (recentProducts.length > MAX_CONSECUTIVE) recentProducts.shift();
 
+        // Cada BLOCK_INTERVAL iteraciones bloqueamos el producto más repetido
         if (iteration % BLOCK_INTERVAL === 0) {
-            // Bloquear producto más repetido en selectedProducts
-            const counts: { [key: number]: number } = {};
-            for (const p of selectedProducts) {
-                counts[p.id] = (counts[p.id] || 0) + 1;
-            }
-            const mostRepeatedId = Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0];
-            if (mostRepeatedId) {
-                blockCounter[parseInt(mostRepeatedId)] = BLOCK_DURATION;
+            const mostRepeatedId = getMostRepeatedProductId();
+            if (mostRepeatedId !== null) {
+                blockCounter.set(mostRepeatedId, BLOCK_DURATION);
             }
         }
 
-        updateBlocks();
+        decrementBlockCounters();
     }
 
     return selectedProducts;
